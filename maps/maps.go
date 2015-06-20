@@ -1,19 +1,17 @@
 package main
 
 import (
-    "code.google.com/p/go-tour/wc"
+    "golang.org/x/tour/wc"
     "strings"
 )
 
 func WordCount(s string) map[string]int {
+    count := make(map[string]int)
     fields := strings.Fields(s)
-    counts := make(map[string]int)
-    
-    for i:=0; i<len(fields); i++ {
-        counts[fields[i]]++
+    for _,v := range fields {
+        count[v]++
     }
-    
-    return counts
+    return count
 }
 
 func main() {
