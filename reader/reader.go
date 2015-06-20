@@ -1,16 +1,36 @@
 package main
 
-import "code.google.com/p/go-tour/reader"
-    
-type MyReader struct{}
+import (
+	"io"
+	"os"
+	"strings"
+)
 
-func (r MyReader) Read(b []byte) (int, error) {
-    for i := range b {
-        b[i] = byte('A')
-    }
-    return len(b), nil
+type rot13Reader struct {
+	r io.Reader
+}
+
+func (r rot13Reader) Read (b []byte) (n int, err error) {
+	n, err = r.r.Read(b)
+	for i,v := range b {
+		switch {
+		case v >= 'a' && v <= 'm':
+			b[i] += 13
+		case v >= 'A' && v <= 'M':
+			b[i] += 13
+		case v >= 'n' && v <= 'z':
+			b[i] -= 13
+		case v >= 'N' && v <= 'Z':
+			b[i] -= 13
+		default:
+
+		}
+	}
+	return
 }
 
 func main() {
-    reader.Validate(MyReader{})
+	s := strings.NewReader("Lbh penpxrq gur pbqr!")
+	r := rot13Reader{s}
+	io.Copy(os.Stdout, &r)
 }
